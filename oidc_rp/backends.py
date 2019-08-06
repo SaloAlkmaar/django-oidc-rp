@@ -59,7 +59,7 @@ class OIDCAuthBackend(ModelBackend):
             'client_secret': oidc_rp_settings.CLIENT_SECRET,
             'grant_type': 'authorization_code',
             'code': code,
-            'redirect_uri': request.build_absolute_uri(reverse('oidc_auth_callback')),
+            'redirect_uri': oidc_rp_settings.REDIRECT_URI,
         }
 
         # Calls the token endpoint.
