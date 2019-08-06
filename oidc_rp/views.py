@@ -113,8 +113,10 @@ class OIDCAuthCallbackView(View):
             # Authenticates the end-user.
             next_url = request.session.get('oidc_auth_next_url', None)
             user = auth.authenticate(nonce=nonce, request=request)
+            print('USER', user)
             if user and user.is_active:
                 auth.login(self.request, user)
+                print('LOGIN')
                 # Stores an expiration timestamp in the user's session. This value will be used if
                 # the project is configured to periodically refresh user's token.
                 self.request.session['oidc_auth_id_token_exp_timestamp'] = \
@@ -133,6 +135,7 @@ class OIDCAuthCallbackView(View):
             # authentication could not be performed at the OP level. In that case we have to logout
             # the current user because we could've obtained this error after a prompt=none hit on
             # OpenID Connect Provider authenticate endpoint.
+            print('ERROR', callback_params)
             auth.logout(request)
 
         return HttpResponseRedirect(oidc_rp_settings.AUTHENTICATION_FAILURE_REDIRECT_URI)
